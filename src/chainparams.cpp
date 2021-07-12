@@ -74,19 +74,21 @@ public:
         consensus.nBIP66Enabled = true;
         consensus.nSegwitEnabled = true;
         consensus.nCSVEnabled = true;
-        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
+	consensus.lwmaAveragingWindow = 45;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
-        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nMinerConfirmationWindow = 12; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000010f4207fc56b");
+        //consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000010f4207fc56b");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000001");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
@@ -114,7 +116,9 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("seeder.btcsha3.com"); // Supports x1, x5, x9, and xd
+	    
+	// String 'rem-' is added to set it to be invalid. Need to update this when there is a new seed.
+        vSeeds.emplace_back("seeder.btcsha3.rem-com"); // Supports x1, x5, x9, and xd
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,83);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,88);
@@ -129,7 +133,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
-        fMiningRequiresPeers = true;
+        fMiningRequiresPeers = false;
 
         checkpointData = {
             {
@@ -138,7 +142,8 @@ public:
                 { 176, uint256S("0x000000001adcdf818192b26b9ae9a3506e864f6669ed28fa7e509e2258a0b68c")},
                 { 250, uint256S("0x000000003790c7a9797e9c7d4c6791b9b5051c250e6d5e0b7745f483eb65c4a3")},
                 { 1000, uint256S("0x0000000052707bd216d8c74f4ad773529d063b2f6bcae6f0f9a6dc120647a330")},
-                { 4000, uint256S("0x000000009697e163b20b9d5675d538f2f046972919f804e5c8130479ef6b19a3")}
+                { 4000, uint256S("0x000000009697e163b20b9d5675d538f2f046972919f804e5c8130479ef6b19a3")},
+                { 20418, uint256S("0x00000000000048fc1a336fa6c0fbf1c9dac5ea7b76c529438a7360b0da92d63b")},
             }
         };
 
@@ -167,10 +172,10 @@ public:
         consensus.nBIP66Enabled = true;
         consensus.nSegwitEnabled = true;
         consensus.nCSVEnabled = true;
-        consensus.powLimit = uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 6 * 6; // two weeks // (60)
         consensus.nPowTargetSpacing = 1 * 6; // (10)
-        consensus.fPowAllowMinDifficultyBlocks = true;
+        consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
@@ -194,7 +199,7 @@ public:
         nDefaultPort = 18335;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1542337888, 52660, /*i,*/ 0x1f00ffff, 4, 50 * COIN);
+        genesis = CreateGenesisBlock(1540053565, 14564263, /*i,*/ 0x1e00ffff, 1, 50 * COIN); // TODO
         consensus.hashGenesisBlock = genesis.GetHash();
         //assert(consensus.hashGenesisBlock == uint256S("0x000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943"));
         //assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
